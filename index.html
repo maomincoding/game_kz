@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>游戏动作控制(设计模式)</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html{
+			height:100%;
+			background: url('images/bg.jpg') no-repeat;
+			background-size:100% 100%; 
+		}
+		#site{
+			height: 100%;
+		}
+		img{
+			position: absolute;
+			bottom: 50px;
+			width: 200px;
+			height: 350px;
+		}
+	</style>
+</head>
+<body>
+	<div id="site">
+		<img src="images/YAGAMI/stand.gif" alt="" id="MC" data-name="n1">
+	</div>
+</body>
+<script type="text/javascript">
+	var pl=document.getElementById("MC");
+	var i=1;
+// 行为表
+	var skill={
+		"n1":{
+			"d1":function(){
+			console.log("前进");
+			play.getImg().src="images/YAGAMI/advance.gif"
+			play.getImg().style.left=i+"px"
+			},
+			"d2":function(){
+			console.log("后退");
+			play.getImg().src="images/YAGAMI/retreat.gif"
+			},
+			"d3":function(){
+			console.log("站立");
+			play.getImg().src="images/YAGAMI/stand.gif"
+			},
+			"d4":function(){
+			console.log("暴起");
+			play.getImg().src="images/YAGAMI/bq.gif"
+			}
+
+		}
+	}
+//键位表
+	var active={
+		"68":"d1",
+		"65":"d2",
+		"83":"d3",
+		"87":"d4"
+	}
+	function set(obj,key){
+		if(!active[key])return;
+		return function(){
+			var name=obj.getName();
+			skill[name][active[key]]();
+		}
+	}
+	function Play(pl){
+		var imgNade =pl;
+		var name=pl.getAttribute("data-name");
+		this.getImg=function(){
+			return imgNade;
+		}
+		this.getName=function(){
+			return name;
+		}
+	}
+	var play=new Play(pl);
+	document.onkeydown=function(e){
+		i+=10;
+		console.log(i);
+		var key=e.keyCode;
+		console.log(key);
+		var fu=set(play,key);
+		if(fu){
+			fu();
+		}
+	}
+</script>
+</html>
